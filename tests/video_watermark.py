@@ -14,7 +14,7 @@ class TestVideoWatermark(unittest.TestCase):
     def setUp(self):
         self.video_path = "./test_video.mp4"
         self.output_path = "./output_video.mp4"
-        self.hidden_message = "Test message"
+        self.hidden_message = "Hello World"
         self.frames = video_to_frames(self.video_path)
         self.fps = 30
         self.size = (self.frames[0].shape[1], self.frames[0].shape[0])
