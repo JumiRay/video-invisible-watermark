@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='video_invisible_watermark',
-    version='0.1.1',
+    version='0.1.2',
     description='A Python library to embed invisible watermarks into video frames',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -17,8 +17,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'opencv-python',
-        'numpy',
-        'stegano',
+        'scipy',
         'Pillow'
     ],
     classifiers=[

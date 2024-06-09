@@ -1,131 +1,103 @@
-# Video Invisible Watermark
+### README
 
-**Video Invisible Watermark** is a Python library for embedding invisible watermarks into video frames.
-The library focuses on embedding messages into the center 100x100 pixel region of video frames, ensuring minimal impact on video quality while maintaining robustness.
+# Video Watermarking with DCT
 
-## Features
+This project provides a simple way to embed and extract watermarks from video frames using the Discrete Cosine Transform (DCT). The watermark image is embedded in the luminance component (Y) of the YUV color space of each video frame.
 
-- **Convert Video to Frames**: Extract frames from a video.
-- **Combine Frames to Video**: Reassemble frames back into a video.
-- **Embed Messages**: Embed hidden messages into the center 100x100 region of video frames.
-- **Extract Messages**: Retrieve hidden messages from the center 100x100 region of video frames.
-- **Robustness**: Ensures minimal impact on video quality while maintaining message integrity.
+## Requirements
 
-## Installation
-
-Install the library using `pip`:
+To install the required packages, use the following command:
 
 ```bash
-pip install video_invisible_watermark
+pip install -r requirements.txt
+```
+
+Contents of `requirements.txt`:
+
+```plaintext
+opencv-python
+Pillow
+scipy
 ```
 
 ## Usage
 
-### Basic Usage
+### Embedding a Watermark in a Video
 
-#### Convert Video to Frames
+To embed a watermark in a video, use the `embed_watermark_to_video` function. This function takes the input video path, output video path, watermark image path, duration in seconds, and frames per second (fps) as arguments.
 
-```python
-from video_invisible_watermark import video_to_frames
-
-video_path = 'input_video.mp4'
-frames = video_to_frames(video_path)
-```
-
-#### Combine Frames to Video
+Example:
 
 ```python
-from video_invisible_watermark import frames_to_video
-
-output_path = 'output_video.mp4'
-fps = 30  # Frames per second
-size = (frames[0].shape[1], frames[0].shape[0])  # Frame size
-
-frames_to_video(frames, output_path, fps, size)
+embed_watermark_to_video('input_video.mp4', 'output_video_with_watermark.mp4', 'watermark.png', duration=10, fps=30)
 ```
 
-#### Embed Message into Frames
+### Extracting a Watermark from a Video
+
+To extract a watermark from a video, use the `extract_watermark_from_video` function. This function takes the output video path, the prefix for the directory where extracted images will be saved, and the duration in seconds as arguments.
+
+Example:
 
 ```python
-from video_invisible_watermark import embed_message_to_frames
-
-message = 'This is a hidden message'
-frames_with_message = embed_message_to_frames(frames, message)
+extract_watermark_from_video('output_video_with_watermark.mp4', prefix='result/post_compression', duration=10)
 ```
 
-#### Extract Message from Frames
+## Functions
 
-```python
-from video_invisible_watermark import extract_message_from_frames
+### load_image(image_path, size=(100, 100))
 
-extracted_messages = extract_message_from_frames(frames_with_message)
-print(extracted_messages)
-```
+Loads an image and resizes it to the specified size.
 
-### Complete Example
+### embed_watermark_to_frame(frame, img)
 
-```python
-from video_invisible_watermark import (
-    video_to_frames,
-    frames_to_video,
-    embed_message_to_frames,
-    extract_message_from_frames
-)
+Embeds a watermark image into a video frame using DCT.
 
-# Convert video to frames
-video_path = 'input_video.mp4'
-frames = video_to_frames(video_path)
+### extract_watermark_from_frame(frame, img_size=(100, 100))
 
-# Embed message into frames
-message = 'This is a hidden message'
-frames_with_message = embed_message_to_frames(frames, message)
+Extracts the embedded watermark image from a video frame using DCT.
 
-# Combine frames to video
-output_path = 'output_video.mp4'
-fps = 30  # Frames per second
-size = (frames[0].shape[1], frames[0].shape[0])  # Frame size
-frames_to_video(frames_with_message, output_path, fps, size)
+### video_to_frames(video_path, duration=10, fps=30)
 
-# Extract message from frames
-extracted_messages = extract_message_from_frames(frames_with_message)
-print(extracted_messages)
-```
+Splits a video into frames for the specified duration and frames per second (fps).
 
-## Testing
+### frames_to_video(frames, output_path, fps, size)
 
-Run tests to ensure everything is working correctly:
+Combines frames into a video with the specified frames per second (fps) and output size.
 
-```bash
-python -m unittest discover tests
-```
+### save_images(images, prefix='result/pre_compression')
 
-## Project Structure
+Saves images to the specified directory with a given prefix.
 
-```
-video-invisible-watermark/
-│
-├── video_invisible_watermark/
-│   ├── __init__.py
-│   ├── video_watermark.py
-│
-├── tests/
-│   ├── __init__.py
-│   ├── test_video_watermark.py
-│
-├── README.md
-├── setup.py
-├── requirements.txt
-├── .gitignore
-```
+### embed_watermark_to_video(input_video_path, output_video_path, watermark_path, duration=10, fps=30)
 
-## Contributing
+Embeds a watermark into a video for the specified duration and frames per second (fps).
 
-Contributions are welcome! Please fork the repository and submit a pull request.
+### extract_watermark_from_video(output_video_path, prefix='compression', duration=10)
+
+Extracts the watermark from a video for the specified duration and saves the extracted images to the specified directory.
+
+## Example Workflow
+
+1. **Embed a watermark into a video**:
+
+    ```python
+    embed_watermark_to_video('input_video.mp4', 'output_video_with_watermark.mp4', 'watermark.png', duration=10, fps=30)
+    ```
+
+2. **Extract the watermark from the video**:
+
+    ```python
+    extract_watermark_from_video('output_video_with_watermark.mp4', prefix='result/post_compression', duration=10)
+    ```
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
----
+## Acknowledgments
 
-This README provides an overview of the library, installation instructions, basic usage examples, and details about the project structure and testing. Feel free to customize it further based on your specific requirements and preferences.
+- [OpenCV](https://opencv.org/)
+- [Pillow](https://python-pillow.org/)
+- [SciPy](https://www.scipy.org/)
+
+Feel free to customize this README further based on your specific needs and usage of the project.
